@@ -23,7 +23,7 @@ func (m *Middleware) Authentication() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		token := c.GetHeader("token")
 		id := c.GetHeader("ID-KEY")
-		log.Println(token, id)
+
 		val, err := m.Cacher.Get(id)
 		if err != nil {
 			handler.BadResponse(c, "server error", http.StatusInternalServerError)

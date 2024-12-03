@@ -26,13 +26,23 @@ func (ctrl *AuthController) Login(c *gin.Context) {
 		return
 	}
 
-	// get user form database
-	token := "2323232"
-	IDKEY := "username-1"
-
-	err := ctrl.cacher.Set(IDKEY, token)
+	isAuthenticated, err := ctrl.service.Login(user)
 	if err != nil {
-		BadResponse(c, "server error", 500)
+		BadResponse(c, "server error", http.StatusInternalServerError)
+		return
+	}
+
+	if !isAuthenticated {
+		BadResponse(c, "authentication failed", http.StatusUnauthorized)
+		return
+	}
+
+	token := "2323232"
+	IDKEY := user.Username
+
+	err = ctrl.cacher.Set(IDKEY, token)
+	if err != nil {
+		BadResponse(c, "server error", http.StatusInternalServerError)
 	}
 
 	SuccessResponseWithData(c, "login successfully", http.StatusOK, gin.H{"token": token, "id_key": IDKEY})

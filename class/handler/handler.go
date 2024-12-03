@@ -12,7 +12,7 @@ import (
 type Handler struct {
 	AdminVoucher          AdminVoucherController
 	AdminVoucherCustomer  AdminVoucherCustomerController
-	AuthHandler           AuthHandler
+	AuthHandler           AuthController
 	CustomerRedeemVoucher CustomerRedeemVoucherController
 	Voucher               VoucherController
 }
@@ -21,7 +21,7 @@ func NewHandler(service service.Service, logger *zap.Logger, rdb database.Cacher
 	return &Handler{
 		AdminVoucher:          *NewAdminVoucherController(service.Voucher, logger),
 		AdminVoucherCustomer:  *NewAdminVoucherCustomerController(service.Voucher, logger),
-		AuthHandler:           NewUserHandler(service, logger, rdb),
+		AuthHandler:           *NewUserHandler(service.Auth, logger, rdb),
 		CustomerRedeemVoucher: *NewCustomerRedeemVoucherController(service.RedeemVoucher, logger),
 		Voucher:               *NewVoucherController(service.Voucher, logger),
 	}

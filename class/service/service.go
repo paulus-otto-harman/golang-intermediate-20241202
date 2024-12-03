@@ -3,13 +3,15 @@ package service
 import "project/class/repository"
 
 type Service struct {
-	Voucher       VoucherService
+	Auth          AuthService
 	RedeemVoucher RedeemVoucherService
+	Voucher       VoucherService
 }
 
 func NewService(repo repository.Repository) Service {
 	return Service{
-		Voucher:       NewVoucherService(repo.Voucher),
+		Auth:          NewAuthService(repo.Auth),
 		RedeemVoucher: NewRedeemVoucherService(repo.RedeemVoucher),
+		Voucher:       NewVoucherService(repo.Voucher),
 	}
 }

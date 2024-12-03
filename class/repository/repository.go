@@ -3,13 +3,15 @@ package repository
 import "gorm.io/gorm"
 
 type Repository struct {
-	Voucher       VoucherRepository
+	Auth          AuthRepository
 	RedeemVoucher RedeemVoucherRepository
+	Voucher       VoucherRepository
 }
 
 func NewRepository(db *gorm.DB) Repository {
 	return Repository{
-		Voucher:       *NewVoucherRepository(db),
+		Auth:          *NewAuthRepository(db),
 		RedeemVoucher: *NewRedeemVoucherRepository(db),
+		Voucher:       *NewVoucherRepository(db),
 	}
 }
